@@ -20,6 +20,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var dataManager = DataManager()
     var data = [AnyObject]()
     var ref: DatabaseReference!
+    var pointAnnotation:CustomPointAnnotation!
     
     override func loadView() {
         super.loadView()
@@ -76,15 +77,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             // let predicate = NSPredicate(format: "date > %@ AND title == 'ahoj'", Date()) // just example
             // let filteredLocations = FavoriteLocation.mr_findAllSorted(by: "title", ascending: true, with: predicate)
             
-            locations?.forEach { location in
-                let annotation = MKPointAnnotation()
-                if let lat = location["lat"] as? Double, let lon = location["lon"] as? Double, let time = location["time"] as? Double, let username = location["username"] as? String {
+            for location in locations! {
+                let annotation = CustomPointAnnotation()
+                if let lat = location["lat"] as? Double, let lon = location["lon"] as? Double, let time = location["time"] as? Double, let username = location["username"] as? String, let gender = location["gender"] as? String {
+                    if gender != "male" && gender != "female" && gender != "unknown" {
+                        continue
+                    }
                     let formatter = DateFormatter()
                     // initially set the format based on your datepicker date
                     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                     let myString = formatter.string(from: Date(timeIntervalSince1970: TimeInterval(time / 1000)))
                     annotation.title = username
                     annotation.subtitle = myString
+                    
+                    annotation.gender = gender
                     annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                     self?.mapView.addAnnotation(annotation)
                 }
@@ -101,8 +107,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier) ?? MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+    
+        let customPointAnnotation = annotation as! CustomPointAnnotation
         
-        annotationView.image = #imageLiteral(resourceName: "pin")
+        if customPointAnnotation.gender == "male" {
+            annotationView.image = #imageLiteral(resourceName: "male")
+        } else if customPointAnnotation.gender == "female" {
+            annotationView.image = #imageLiteral(resourceName: "female")
+        } else {
+            annotationView.image = #imageLiteral(resourceName: "unknown")
+        }
         annotationView.canShowCallout = true
         
         let button = UIButton(type: .detailDisclosure)
@@ -140,6 +154,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
     }
     
+
 //    let locations = [
 //        ["lat": 50.10155117, "lon": 14.50131164],
 //        ["lat": 50.04845155, "lon": 14.40643163],

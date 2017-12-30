@@ -14,7 +14,10 @@ class TableViewController : UIViewController {
     
     weak var pushButton: UIButton!
     weak var sampleTextField: UITextField!
-    weak var maleFemaleSwitch: UISwitch!
+    weak var maleSwitch: UISwitch!
+    weak var femaleSwitch: UISwitch!
+    weak var unknownSwitch: UISwitch!
+    var gender = "male"
     var dataManager = DataManager()
     
     let locationManager = CLLocationManager()
@@ -38,18 +41,30 @@ class TableViewController : UIViewController {
         sampleTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center
         view.addSubview(sampleTextField)
         
-        var switchLabelMale = UILabel(frame: CGRect(x: 40, y: 170, width: 50, height: 50))
+        let maleSwitch = UISwitch(frame: CGRect(x: 40, y: 170, width: 50, height: 50))
+        view.addSubview(maleSwitch)
+        
+        let switchLabelMale = UILabel(frame: CGRect(x: 100, y: 170, width: 50, height: 50))
         switchLabelMale.text = "Male"
         view.addSubview(switchLabelMale)
+
         
-        var maleFemaleSwitch = UISwitch(frame: CGRect(x: 100, y: 170, width: 50, height: 50))
-        view.addSubview(maleFemaleSwitch)
+        let femaleSwitch = UISwitch(frame: CGRect(x: 40, y: 210, width: 50, height: 50))
+        view.addSubview(femaleSwitch)
         
-        var switchLabelFemale = UILabel(frame: CGRect(x: 160, y: 170, width: 100, height: 50))
+        let switchLabelFemale = UILabel(frame: CGRect(x: 100, y: 210, width: 100, height: 50))
         switchLabelFemale.text = "Female"
         view.addSubview(switchLabelFemale)
+
         
-        let pushButton = UIButton(frame: CGRect(x: 20, y: 240, width: 270, height: 50))
+        let unknownSwitch = UISwitch(frame: CGRect(x: 40, y: 250, width: 50, height: 50))
+        view.addSubview(unknownSwitch)
+        
+        let switchLabelUnknown = UILabel(frame: CGRect(x: 100, y: 250, width: 100, height: 50))
+        switchLabelUnknown.text = "Unknown"
+        view.addSubview(switchLabelUnknown)
+        
+        let pushButton = UIButton(frame: CGRect(x: 20, y: 300, width: 270, height: 50))
         pushButton.setTitle("Add pin", for: .normal)
         pushButton.setTitleColor(.white, for: .normal)
         pushButton.backgroundColor = .blue
@@ -57,7 +72,16 @@ class TableViewController : UIViewController {
 
         self.sampleTextField = sampleTextField
         self.pushButton = pushButton
-        self.maleFemaleSwitch = maleFemaleSwitch
+        self.maleSwitch = maleSwitch
+        self.femaleSwitch = femaleSwitch
+        self.unknownSwitch = unknownSwitch
+        
+        
+        
+        unknownSwitch.addTarget(self, action: #selector(unknownChanged), for: UIControlEvents.valueChanged)
+        femaleSwitch.addTarget(self, action: #selector(femaleChanged), for: UIControlEvents.valueChanged)
+        maleSwitch.addTarget(self, action: #selector(maleChanged), for: UIControlEvents.valueChanged)
+        maleSwitch.setOn(true, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,18 +112,51 @@ class TableViewController : UIViewController {
         pushButton.addTarget(self, action: #selector(pushButtonTapped(_:)), for: .touchUpInside)
     }
     
+    @objc func maleChanged(maleSwitch: UISwitch) {
+        if maleSwitch.isOn {
+            femaleSwitch.setOn(false, animated: true)
+            unknownSwitch.setOn(false, animated: true)
+            self.gender = "male"
+        } else {
+            femaleSwitch.setOn(true, animated: true)
+            self.gender = "female"
+        }
+    }
     
+    @objc func femaleChanged(femaleSwitch: UISwitch) {
+        if femaleSwitch.isOn {
+            maleSwitch.setOn(false, animated: true)
+            unknownSwitch.setOn(false, animated: true)
+            self.gender = "female"
+        } else {
+            unknownSwitch.setOn(true, animated: true)
+            self.gender = "unknown"
+        }
+    }
+    
+    @objc func unknownChanged(unknownSwitch: UISwitch) {
+        if unknownSwitch.isOn {
+            maleSwitch.setOn(false, animated: true)
+            femaleSwitch.setOn(false, animated: true)
+            self.gender = "unknown"
+        } else {
+            maleSwitch.setOn(true, animated: true)
+            self.gender = "male"
+        }
+    }
     
     @objc func pushButtonTapped(_ sender: UIButton) {
         
         let username: String = sampleTextField.text!
-        var gender: String = "male"
-        if maleFemaleSwitch.isOn {
-            gender = "female"
-        }
-        dataManager.addPin(username: username, gender: gender, lat: self.userLatitude, lon: self.userLongitude) { [weak self] pin in
-            print(pin)
-            navigationController?.pushViewController(TableViewController(), animated: true)
+        if username != "" {
+            dataManager.addPin(username: username, gender: self.gender, lat: self.userLatitude, lon: self.userLongitude) { [weak self] pin in
+                print(pin)
+                navigationController?.pushViewController(TableViewController(), animated: true)
+            }
+        } else {
+            let alert = UIAlertController(title: "Missing username", message: "Please fill in username before sending.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }

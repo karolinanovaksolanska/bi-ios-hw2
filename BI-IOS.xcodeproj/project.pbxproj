@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		2314AEB41FF4F92800A23AB9 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2314AEB31FF4F92800A23AB9 /* Pin.swift */; };
+		236D73461FF79F1E00ADC7D6 /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D73451FF79F1E00ADC7D6 /* CustomPointAnnotation.swift */; };
 		7FAAAE85204BEB9ABDDF7A30 /* Pods_BI_IOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB8D39B905B12A8CCFB85EC /* Pods_BI_IOS.framework */; };
 		881135DB1FC409B2009A0B29 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 881135D91FC409B2009A0B29 /* Model.xcdatamodeld */; };
 		881135E71FC40CEE009A0B29 /* _FavoriteLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881135E31FC40CEE009A0B29 /* _FavoriteLocation.swift */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		2314AEB31FF4F92800A23AB9 /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		236D73451FF79F1E00ADC7D6 /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		881135DA1FC409B2009A0B29 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		881135E31FC40CEE009A0B29 /* _FavoriteLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _FavoriteLocation.swift; sourceTree = "<group>"; };
 		881135E41FC40CEE009A0B29 /* _User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _User.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				B40596421FA7A9D1000ED753 /* TableViewController.swift */,
 				B4F1658B1FB0E6FE00272E0C /* DataManager.swift */,
 				8812B5341FBAC63F00DE8D70 /* MapViewController.swift */,
+				236D73451FF79F1E00ADC7D6 /* CustomPointAnnotation.swift */,
 			);
 			path = "BI-IOS";
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				881135E71FC40CEE009A0B29 /* _FavoriteLocation.swift in Sources */,
 				88B8670D1F8B8E1A00345E71 /* AppDelegate.swift in Sources */,
 				B40596431FA7A9D1000ED753 /* TableViewController.swift in Sources */,
+				236D73461FF79F1E00ADC7D6 /* CustomPointAnnotation.swift in Sources */,
 				881135DB1FC409B2009A0B29 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
